@@ -18,9 +18,12 @@
     input.classList.add("form-control");
     input.placeholder = "Введите название нового дела";
     buttonWriper.classList.add("input-group-append");
-    button.idlist.add("btnPrimary");
     button.classList.add("btn", "btn-primary", "disabled");
     button.textContent = "Добавить дело";
+
+    input.id = 'inputPrime';
+    button.id = 'buttonPrime';
+    button.disabled = true;
 
     buttonWriper.append(button);
     form.append(input);
@@ -110,7 +113,6 @@
       });
 
       todoItem.deleteButton.addEventListener('click', function() {
-       debugger
         if(confirm('Вы уверены?')) {
           todoItem.item.remove();
         }
@@ -118,7 +120,12 @@
 
       todoList.append(todoItem.item);
       
+      button = document.getElementsById('buttonPrime');
+      input = document.getElementsById('inputPrime');
+      debugger
       todoItemForm.input.value = '';
+      button.classList.add("disabled");
+      button.disabled = true;
     });
   }
   window.createTodoApp = createTodoApp;
