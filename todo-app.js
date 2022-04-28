@@ -1,9 +1,11 @@
 (function () {
+
   //создаём и возвращаем заголовок приложения
   function createAppTitile(title) {
     let appTitle = document.createElement("h2");
     appTitle.innerHTML = title;
     return appTitle;
+
   }
   //создаём и возвращаем форму для создания дела
   function createTodoItemForm() {
@@ -16,6 +18,7 @@
     input.classList.add("form-control");
     input.placeholder = "Введите название нового дела";
     buttonWriper.classList.add("input-group-append");
+    button.idlist.add("btnPrimary");
     button.classList.add("btn", "btn-primary", "disabled");
     button.textContent = "Добавить дело";
 
@@ -24,16 +27,8 @@
     form.append(buttonWriper); 
 
 
-    input.addEventListener('inputCheck', (e) => {
-      e.preventDefault();
-      if (!input.value){
-        button.classList.toggle('disabled');
-      } else {
-        button.classList.remove('disabled');
-      }
-    })
-
-  
+    
+    disableBtn(button, input);
 
     return {
       form,
@@ -73,6 +68,23 @@
       doneButton,
       deleteButton,
     };
+  }
+
+  
+  function disableBtn(button, input){
+    
+    button.disabled = true;
+
+    input.addEventListener('input', (e) => {
+      e.preventDefault();
+      if (!input.value){
+        button.classList.toggle('disabled');
+        button.disabled = true;
+      } else {
+        button.classList.remove('disabled');
+        button.disabled = false;
+      }
+    })
   }
 
   function createTodoApp(container, title = 'Список дел') {
