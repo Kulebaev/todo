@@ -16,12 +16,24 @@
     input.classList.add("form-control");
     input.placeholder = "Введите название нового дела";
     buttonWriper.classList.add("input-group-append");
-    button.classList.add("btn", "btn-primary");
+    button.classList.add("btn", "btn-primary", "disabled");
     button.textContent = "Добавить дело";
 
     buttonWriper.append(button);
     form.append(input);
-    form.append(buttonWriper);
+    form.append(buttonWriper); 
+
+
+    input.addEventListener('inputCheck', (e) => {
+      e.preventDefault();
+      if (!input.value){
+        button.classList.toggle('disabled');
+      } else {
+        button.classList.remove('disabled');
+      }
+    })
+
+  
 
     return {
       form,
