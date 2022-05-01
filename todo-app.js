@@ -80,7 +80,7 @@
 
     input.addEventListener('input', (e) => {
       e.preventDefault();
-      if (!input.value){
+      if (!input.value.trim()){
         button.classList.toggle('disabled');
         button.disabled = true;
       } else {
@@ -122,7 +122,6 @@
       
       button = document.getElementsById('buttonPrime');
       input = document.getElementsById('inputPrime');
-      debugger
       todoItemForm.input.value = '';
       button.classList.add("disabled");
       button.disabled = true;
