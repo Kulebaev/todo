@@ -120,11 +120,9 @@
 
       todoList.append(todoItem.item);
       
-      button = document.getElementsById('buttonPrime');
-      input = document.getElementsById('inputPrime');
       todoItemForm.input.value = '';
-      button.classList.add("disabled");
-      button.disabled = true;
+      todoItemForm.button.classList.add("disabled");
+      todoItemForm.button.disabled = true;
     });
   }
   window.createTodoApp = createTodoApp;
