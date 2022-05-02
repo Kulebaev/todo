@@ -134,13 +134,15 @@
 
       todoList.append(todoItem.item);
 
+      todoValue = todoItemForm.input.value;
       todoItemForm.input.value = "";
       todoItemForm.button.classList.add("disabled");
       todoItemForm.button.disabled = true;
 
-      let json = JSON.stringify({ name: todoItem.name, done: todoItem.done });
+      
+      let json = JSON.stringify({ todoValue: todoItem.done });
       debugger;
-      let saveLocal = window.localStorage.setItem(json);
+      let saveLocal = localStorage.setItem(todoItem.value, todoItem.done);
     });
   }
   window.createTodoApp = createTodoApp;
