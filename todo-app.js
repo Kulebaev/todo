@@ -44,7 +44,7 @@
 
   function createTodoItem(name, done = false) {
     let item = document.createElement("li");
-
+    debugger
     let buttonGroup = document.createElement("div");
     let doneButton = document.createElement("button");
     let deleteButton = document.createElement("button");
@@ -71,7 +71,9 @@
       doneButton,
       deleteButton,
       done,
+
     };
+
   }
 
   function disableBtn(button, input) {
@@ -93,14 +95,12 @@
     let todoAppTitle = createAppTitile(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
-
+debugger
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
     container.append(todoList);
 
     todoItemForm.form.addEventListener("submit", function (e) {
-      let deloOdin = { name: "Дело1", done: true };
-
       e.preventDefault();
 
       if (!todoItemForm.input.value) {
@@ -112,15 +112,11 @@
         todoItemForm.done
       );
 
-      if (todoItem.done) {
-        todoItem.done = true;
-        delo1.item.classList.toggle("list-group-item-success");
-      }
       todoItem.doneButton.addEventListener("click", function () {
-        if (!todoItem.done) {
-          todoItem.done = true;
+        if (!todoItem.item.done) {
+          todoItem.item.done = true;
         } else {
-          todoItem.done = false;
+          todoItem.item.done = false;
         }
         todoItem.item.classList.toggle("list-group-item-success");
         debugger;
@@ -134,15 +130,16 @@
 
       todoList.append(todoItem.item);
 
-      todoValue = todoItemForm.input.value;
+
+      localStorageKey = todoItemForm.input.value;
       todoItemForm.input.value = "";
       todoItemForm.button.classList.add("disabled");
       todoItemForm.button.disabled = true;
 
       
-      let json = JSON.stringify({ todoValue: todoItem.done });
-      debugger;
-      let saveLocal = localStorage.setItem(todoItem.value, todoItem.done);
+      let json = JSON.stringify({ name: todoItem.item.name ,done: todoItem.item.done});
+      let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
+      debugger
     });
   }
   window.createTodoApp = createTodoApp;
