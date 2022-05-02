@@ -42,7 +42,7 @@
     return list;
   }
 
-  function createTodoItem(name, done = false) {
+  function createTodoItem(name) {
     let item = document.createElement("li");
     debugger
     let buttonGroup = document.createElement("div");
@@ -70,8 +70,6 @@
       item,
       doneButton,
       deleteButton,
-      done,
-
     };
 
   }
@@ -91,11 +89,11 @@
     });
   }
 
-  function createTodoApp(container, title = "Список дел") {
+  function createTodoApp(container, title = "Список дел", spisok = undefined) {
     let todoAppTitle = createAppTitile(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
-debugger
+
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
     container.append(todoList);
@@ -103,23 +101,23 @@ debugger
     todoItemForm.form.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      let localStorageKey = todoItemForm.input.value;
       if (!todoItemForm.input.value) {
         return;
       }
 
-      let todoItem = createTodoItem(
-        todoItemForm.input.value,
-        todoItemForm.done
-      );
+      let todoItem = createTodoItem(todoItemForm.input.value);
 
       todoItem.doneButton.addEventListener("click", function () {
-        if (!todoItem.item.done) {
-          todoItem.item.done = true;
+        if (!todoItem.done) {
+          todoItem.done = true;
+          let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
         } else {
-          todoItem.item.done = false;
+          todoItem.done = false;
+          let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
         }
         todoItem.item.classList.toggle("list-group-item-success");
-        debugger;
+
       });
 
       todoItem.deleteButton.addEventListener("click", function () {
@@ -130,16 +128,11 @@ debugger
 
       todoList.append(todoItem.item);
 
-
-      localStorageKey = todoItemForm.input.value;
       todoItemForm.input.value = "";
       todoItemForm.button.classList.add("disabled");
       todoItemForm.button.disabled = true;
 
-      
-      let json = JSON.stringify({ name: todoItem.item.name ,done: todoItem.item.done});
-      let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
-      debugger
+      localStorage.setItem(localStorageKey, todoItem.done);
     });
   }
   window.createTodoApp = createTodoApp;
