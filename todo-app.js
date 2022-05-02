@@ -90,10 +90,12 @@
     })
   }
 
-  function createTodoApp(container, title = 'Список дел') {
+  function createTodoApp(container, title = 'Список дел', listItem = undefined) {
+
     let todoAppTitle = createAppTitile(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
+    debugger
 
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
