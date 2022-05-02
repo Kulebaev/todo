@@ -42,9 +42,8 @@
     return list;
   }
 
-  function createTodoItem(name) {
+  function createTodoItem(name, done = false) {
     let item = document.createElement("li");
-    debugger
     let buttonGroup = document.createElement("div");
     let doneButton = document.createElement("button");
     let deleteButton = document.createElement("button");
@@ -70,6 +69,7 @@
       item,
       doneButton,
       deleteButton,
+      done,
     };
 
   }
@@ -88,6 +88,7 @@
       }
     });
   }
+  var spisok
 
   function createTodoApp(container, title = "Список дел", spisok = undefined) {
     let todoAppTitle = createAppTitile(title);
@@ -101,28 +102,33 @@
     todoItemForm.form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      let localStorageKey = todoItemForm.input.value;
+      localStorageKey = todoItemForm.input.value;
       if (!todoItemForm.input.value) {
         return;
       }
 
-      let todoItem = createTodoItem(todoItemForm.input.value);
+      let todoItem = createTodoItem(todoItemForm.input.value, todoItemForm.done);
 
       todoItem.doneButton.addEventListener("click", function () {
         if (!todoItem.done) {
+          let t = todoItem.item.parentNode[this];
           todoItem.done = true;
+          debugger
           let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
         } else {
           todoItem.done = false;
           let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
         }
+        debugger
         todoItem.item.classList.toggle("list-group-item-success");
 
       });
 
       todoItem.deleteButton.addEventListener("click", function () {
         if (confirm("Вы уверены?")) {
-          todoItem.item.remove();
+          debugger
+          
+          localStorage.removeItem();
         }
       });
 
