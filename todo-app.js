@@ -43,6 +43,7 @@
   }
 
   function createTodoItem(name, done = false) {
+    debugger
     let item = document.createElement("li");
     let buttonGroup = document.createElement("div");
     let doneButton = document.createElement("button");
@@ -88,9 +89,8 @@
       }
     });
   }
-  var spisok
 
-  function createTodoApp(container, title = "Список дел", spisok = undefined) {
+  function createTodoApp(container, title = "Список дел") {
     let todoAppTitle = createAppTitile(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
@@ -98,6 +98,7 @@
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
     container.append(todoList);
+
 
     todoItemForm.form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -113,7 +114,6 @@
         if (!todoItem.done) {
           let t = todoItem.item.parentNode[this];
           todoItem.done = true;
-          debugger
           let saveLocal = localStorage.setItem(localStorageKey, todoItem.done);
         } else {
           todoItem.done = false;
@@ -140,6 +140,21 @@
 
       localStorage.setItem(localStorageKey, todoItem.done);
     });
+
+    function nameStorage(){
+      for(let i = 0; i < localStorage.length; i++) {
+        let todoList = createTodoList();
+        let todoItem = createTodoItem(todoItemForm.input.value, todoItemForm.done);
+        container.append(todoList);
+        let key = localStorage.key(i);
+        keyLocal = key;
+        itemLocal = localStorage.getItem(key);
+        todoList.append(createTodoItem(keyLocal, JSON.parse(itemLocal)));
+        debugger
+      }
+    }
+
+    nameStorage();
   }
   window.createTodoApp = createTodoApp;
 })();
