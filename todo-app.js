@@ -43,7 +43,6 @@
   }
 
   function createTodoItem(name, done = false) {
-    debugger;
     let item = document.createElement("li");
     let buttonGroup = document.createElement("div");
     let doneButton = document.createElement("button");
@@ -113,17 +112,22 @@
       );
       debugger;
       todoItem.doneButton.addEventListener("click", function () {
+        var parent = this.closest(".list-group-item");
         if (!todoItem.done) {
           debugger;
-          var parent = this.closest(".list-group-item");
 
           todoItem.done = true;
-          let saveLocal = localStorage.setItem(parent.firstChild.data, todoItem.done);
+          let saveLocal = localStorage.setItem(
+            parent.firstChild.data,
+            todoItem.done
+          );
         } else {
           todoItem.done = false;
-          let saveLocal = localStorage.setItem(parent.firstChild.data, todoItem.done);
+          let saveLocal = localStorage.setItem(
+            parent.firstChild.data,
+            todoItem.done
+          );
         }
-        debugger;
         todoItem.item.classList.toggle("list-group-item-success");
       });
 
@@ -144,30 +148,40 @@
       localStorage.setItem(localStorageKey, todoItem.done);
     });
 
-    function nameStorage(todoList) {
+    function nameStorage(todoList) { 
       for (let i = 0; i < localStorage.length; i++) {
         key = localStorage.key(i);
         keyLocal = key;
         itemLocal = localStorage.getItem(key);
-        todoItem = createTodoItem(keyLocal);
+        todoItem = createTodoItem(keyLocal, itemLocal);
         todoList.append(todoItem.item);
-
         if (JSON.parse(itemLocal)) {
           todoItem.item.classList.toggle("list-group-item-success");
         }
         todoItem.doneButton.addEventListener("click", function () {
-          if (!todoItem.done) {
-            debugger;
-            var parent = this.closest(".list-group-item");
-  
-            todoItem.done = true;
-            let saveLocal = localStorage.setItem(parent.firstChild.data, todoItem.done);
-          } else {
-            todoItem.done = false;
-            let saveLocal = localStorage.setItem(parent.firstChild.data, todoItem.done);
-          }
           debugger;
-          todoItem.item.classList.toggle("list-group-item-success");
+          var parent = this.closest(".list-group-item");
+          if (!parent.done) {
+            parent.done = true;
+            let saveLocal = localStorage.setItem(
+              parent.childNodes.text.nodeValue,
+              parent.done
+            );
+          } else {
+            parent.done = false;
+            let saveLocal = localStorage.setItem(
+              parent.childNodes.text.data,
+              parent.done
+            );
+          }
+          parent.classList.toggle("list-group-item-success");
+        });
+        todoItem.deleteButton.addEventListener("click", function () {
+          var parent = this.closest(".list-group-item");
+          if (confirm("Вы уверены?")) {
+            parent.remove();
+            localStorage.removeItem(parent.childNodes.text.data);
+          }
         });
       }
     }
