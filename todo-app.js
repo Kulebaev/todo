@@ -42,6 +42,27 @@
     return list;
   }
 
+  function buttonsWriper(todoItem){
+    todoItem.doneButton.addEventListener("click", function () {
+      var parent = this.closest(".list-group-item");
+      if (!JSON.parse(todoItem.done)) {
+
+        todoItem.done = true;
+        localStorage.setItem(parent.children[0].outerText,todoItem.done);
+      } else {
+        todoItem.done = false;
+        localStorage.setItem(parent.children[0].outerText,todoItem.done);
+      }
+      parent.classList.toggle("list-group-item-success");
+    });
+    todoItem.deleteButton.addEventListener("click", function () {
+      var parent = this.closest(".list-group-item");
+      if (confirm("Вы уверены?")) {
+        parent.remove();
+        localStorage.removeItem(parent.children[0].outerText);
+      }
+    });
+  }
   function createTodoItem(name, done = false) {
     let item = document.createElement("li");
     let p = document.createElement("p");
@@ -114,31 +135,7 @@
         todoItemForm.input.value,
         todoItemForm.done
       );
-      todoItem.doneButton.addEventListener("click", function () {
-        var parent = this.closest(".list-group-item");
-        if (!todoItem.done) {
-          todoItem.done = true;
-          let saveLocal = localStorage.setItem(
-            parent.children[0].outerText,
-            todoItem.done
-          );
-        } else {
-          todoItem.done = false;
-          let saveLocal = localStorage.setItem(
-            parent.children[0].outerText,
-            todoItem.done
-          );
-        }
-        todoItem.item.classList.toggle("list-group-item-success");
-      });
-
-      todoItem.deleteButton.addEventListener("click", function () {
-        if (confirm("Вы уверены?")) {
-          var parent = this.closest(".list-group-item");
-          todoItem.item.remove();
-          localStorage.removeItem(parent.children[0].outerText);
-        }
-      });
+      buttonsWriper(todoItem);
 
       todoList.append(todoItem.item);
 
@@ -159,24 +156,7 @@
         if (JSON.parse(itemLocal)) {
           todoItem.item.classList.toggle("list-group-item-success");
         }
-        todoItem.doneButton.addEventListener("click", function () {
-          var parent = this.closest(".list-group-item");
-          if (!parent.done) {
-            parent.done = true;
-            localStorage.setItem(parent.children[0].outerText,todoItem.done);
-          } else {
-            parent.done = false;
-            localStorage.setItem(parent.children[0].outerText,todoItem.done);
-          }
-          parent.classList.toggle("list-group-item-success");
-        });
-        todoItem.deleteButton.addEventListener("click", function () {
-          var parent = this.closest(".list-group-item");
-          if (confirm("Вы уверены?")) {
-            parent.remove();
-            localStorage.removeItem(parent.children[0].outerText);
-          }
-        });
+        buttonsWriper(todoItem);
       }
     }
   }
