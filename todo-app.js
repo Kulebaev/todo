@@ -44,16 +44,18 @@
 
   function createTodoItem(name, done = false) {
     let item = document.createElement("li");
+    let p = document.createElement("p");
     let buttonGroup = document.createElement("div");
     let doneButton = document.createElement("button");
     let deleteButton = document.createElement("button");
+    p.classList.add("mb-0", "pPrime");
     item.classList.add(
       "list-group-item",
       "d-flex",
       "justify-content-between",
       "align-item-center"
     );
-    item.textContent = name;
+    p.textContent = name;
 
     buttonGroup.classList.add("btn-group", "btn-group-sm");
     doneButton.classList.add("btn-group", "btn-success");
@@ -63,7 +65,9 @@
 
     buttonGroup.append(doneButton);
     buttonGroup.append(deleteButton);
+    item.append(p);
     item.append(buttonGroup);
+  
 
     return {
       item,
@@ -110,21 +114,18 @@
         todoItemForm.input.value,
         todoItemForm.done
       );
-      debugger;
       todoItem.doneButton.addEventListener("click", function () {
         var parent = this.closest(".list-group-item");
         if (!todoItem.done) {
-          debugger;
-
           todoItem.done = true;
           let saveLocal = localStorage.setItem(
-            parent.firstChild.data,
+            parent.children[0].outerText,
             todoItem.done
           );
         } else {
           todoItem.done = false;
           let saveLocal = localStorage.setItem(
-            parent.firstChild.data,
+            parent.children[0].outerText,
             todoItem.done
           );
         }
@@ -133,9 +134,9 @@
 
       todoItem.deleteButton.addEventListener("click", function () {
         if (confirm("Вы уверены?")) {
-          debugger;
+          var parent = this.closest(".list-group-item");
           todoItem.item.remove();
-          localStorage.removeItem();
+          localStorage.removeItem(parent.children[0].outerText);
         }
       });
 
@@ -159,20 +160,13 @@
           todoItem.item.classList.toggle("list-group-item-success");
         }
         todoItem.doneButton.addEventListener("click", function () {
-          debugger;
           var parent = this.closest(".list-group-item");
           if (!parent.done) {
             parent.done = true;
-            let saveLocal = localStorage.setItem(
-              parent.childNodes.text.nodeValue,
-              parent.done
-            );
+            localStorage.setItem(parent.children[0].outerText,todoItem.done);
           } else {
             parent.done = false;
-            let saveLocal = localStorage.setItem(
-              parent.childNodes.text.data,
-              parent.done
-            );
+            localStorage.setItem(parent.children[0].outerText,todoItem.done);
           }
           parent.classList.toggle("list-group-item-success");
         });
@@ -180,7 +174,7 @@
           var parent = this.closest(".list-group-item");
           if (confirm("Вы уверены?")) {
             parent.remove();
-            localStorage.removeItem(parent.childNodes.text.data);
+            localStorage.removeItem(parent.children[0].outerText);
           }
         });
       }
