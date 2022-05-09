@@ -16,7 +16,15 @@
     <script defer src="todo-app.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        createTodoApp(document.getElementById("todo-app"), "Дела папы");
+        arr = [];
+        for (let i = 0; i < localStorage.length; i++) {
+        key = localStorage.key(i);
+        itemLocal = JSON.parse(localStorage.getItem(key));
+        if ((key == "Дела папы")){
+          arr = itemLocal;
+        }    
+    }
+        createTodoApp(document.getElementById("todo-app"), "Дела папы", arr);
       });
     </script>
   </head>

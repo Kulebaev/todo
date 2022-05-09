@@ -42,28 +42,61 @@
     return list;
   }
 
-  function buttonsWriper(todoItem){
+  
+  function buttonsWriper(todoItem, title){
     todoItem.doneButton.addEventListener("click", function () {
       var parent = this.closest(".list-group-item");
-      if (!JSON.parse(todoItem.done)) {
+      for (let i = 0; i < localStorage.length; i++) {
+        key = localStorage.key(i);
+        arr = itemLocal;
+        if (key == title) {
+          itemLocal = JSON.parse(localStorage.getItem(key));
+          for (let n = 0; n < itemLocal.length; n++){
 
-        todoItem.done = true;
-        localStorage.setItem(parent.children[0].outerText,todoItem.done);
-      } else {
-        todoItem.done = false;
-        localStorage.setItem(parent.children[0].outerText,todoItem.done);
-      }
-      parent.classList.toggle("list-group-item-success");
-    });
-    todoItem.deleteButton.addEventListener("click", function () {
-      var parent = this.closest(".list-group-item");
-      if (confirm("Вы уверены?")) {
-        parent.remove();
-        localStorage.removeItem(parent.children[0].outerText);
-      }
-    });
+            if (parent.children[0].outerText == itemLocal[n].todoValue){
+
+              if (!itemLocal[n].todoItemDone) {
+              itemLocal[n].todoItemDone = true;
+              parent.classList.toggle("list-group-item-success");
+  
+              } else {
+                itemLocal[n].todoItemDone = false;
+                parent.classList.toggle("list-group-item-success");
+              }
+            }
+            todoItem = createTodoItem(itemLocal[n].todoValue, itemLocal[n].todoItemDone);
+            localStorage.setItem(title, JSON.stringify(itemLocal));
+        }
+    }
   }
-  function createTodoItem(name, done = false) {
+  })
+  todoItem.deleteButton.addEventListener("click", function () {
+    var parent = this.closest(".list-group-item");
+    if (confirm("Вы уверены?")) {
+      parent.remove();
+      for (let i = 0; i < localStorage.length; i++) {
+        key = localStorage.key(i);
+        arr = itemLocal;
+        if (key == title) {
+          itemLocal = JSON.parse(localStorage.getItem(key));
+          for (let n = 0; n < itemLocal.length; n++){
+            //todoList.append(todoItem.item);
+
+            if (parent.children[0].outerText == itemLocal[n].todoValue){
+              arr.splice(n, 1);
+              todoItem = createTodoItem(itemLocal[n].todoValue, itemLocal[n].todoItemDone);
+            localStorage.setItem(title, JSON.stringify(arr));
+
+            }
+            
+        }
+    }
+      
+    }
+}});
+}
+
+  function createTodoItem(name, done = false,arr) {
     let item = document.createElement("li");
     let p = document.createElement("p");
     let buttonGroup = document.createElement("div");
@@ -121,7 +154,7 @@
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
     container.append(todoList);
-    nameStorage(todoList);
+    nameStorage(todoList, title);
 
     todoItemForm.form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -131,32 +164,38 @@
         return;
       }
 
-      let todoItem = createTodoItem(
-        todoItemForm.input.value,
-        todoItemForm.done
-      );
-      buttonsWriper(todoItem);
+      let todoItem = createTodoItem(todoItemForm.input.value, todoItemForm.done);
+      buttonsWriper(todoItem, title);
 
       todoList.append(todoItem.item);
-
+      let todoItemDone = todoItem.done;
+      todoValue = todoItemForm.input.value;
       todoItemForm.input.value = "";
       todoItemForm.button.classList.add("disabled");
       todoItemForm.button.disabled = true;
 
-      localStorage.setItem(localStorageKey, todoItem.done);
+
+      arr.push({todoValue,todoItemDone})
+
+      localStorage.setItem(title ,JSON.stringify(arr));
     });
 
-    function nameStorage(todoList) { 
+    function nameStorage(todoList, title) { 
       for (let i = 0; i < localStorage.length; i++) {
         key = localStorage.key(i);
-        keyLocal = key;
-        itemLocal = localStorage.getItem(key);
-        todoItem = createTodoItem(keyLocal, itemLocal);
-        todoList.append(todoItem.item);
-        if (JSON.parse(itemLocal)) {
-          todoItem.item.classList.toggle("list-group-item-success");
+        if (key == title) {
+          itemLocal = JSON.parse(localStorage.getItem(key));
+          for (let n = 0; n < itemLocal.length; n++){
+            todoItem = createTodoItem(itemLocal[n].todoValue, itemLocal[n].todoItemDone);
+            todoList.append(todoItem.item);
+
+            if (JSON.parse(itemLocal[n].todoItemDone)) {
+              todoItem.item.classList.toggle("list-group-item-success");
+            }
+            buttonsWriper(todoItem, title);
+          }
         }
-        buttonsWriper(todoItem);
+
       }
     }
   }
