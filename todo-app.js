@@ -112,8 +112,10 @@
     p.textContent = name;
 
     buttonGroup.classList.add("btn-group", "btn-group-sm");
+
     doneButton.classList.add("btn-group", "btn-success");
     doneButton.textContent = "Готово";
+    
     deleteButton.classList.add("btn", "btn-danger");
     deleteButton.textContent = "Удалить";
 
